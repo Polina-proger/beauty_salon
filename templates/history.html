@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-clock-history"></i> История визитов</h2>
+
+{% if appointments %}
+    <div class="list-group">
+        {% for appt in appointments %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ appt.service.name }}</h5>
+                    <small>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }}</small>
+                </div>
+                <p class="mb-1">Статус:
+                    {% if appt.status == 'completed' %}
+                        <span class="badge bg-success">Завершён</span>
+                    {% elif appt.status == 'cancelled' %}
+                        <span class="badge bg-danger">Отменён</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ appt.status }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">История визитов пуста.</p>
+{% endif %}
+{% endblock %}

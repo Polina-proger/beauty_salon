@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-calendar-check"></i> Мои активные записи</h2>
+
+{% if appointments %}
+    <div class="list-group">
+        {% for appt in appointments %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ appt.service.name }}</h5>
+                    <small>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }}</small>
+                </div>
+                <p class="mb-1">Длительность: {{ appt.service.duration }} мин. | Цена: {{ appt.service.price }} ₽</p>
+                <span class="badge bg-primary">Активна</span>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">У вас нет активных записей.</div>
+    <a href="{{ url_for('free_slots') }}" class="btn btn-success">Записаться на услугу</a>
+{% endif %}
+{% endblock %}

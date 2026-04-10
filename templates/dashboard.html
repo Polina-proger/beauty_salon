@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">👋 Здравствуйте, {{ current_user.name }}!</h2>
+
+<div class="row g-4">
+    <!-- Активные записи -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-calendar-check"></i> Ближайшие записи
+            </div>
+            <div class="card-body">
+                {% if active_appointments %}
+                    <div class="list-group">
+                        {% for appt in active_appointments %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ appt.service.name }}</strong><br>
+                                    <small>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }}</small>
+                                </div>
+                                <span class="badge bg-success">Активна</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Нет предстоящих записей</p>
+                {% endif %}
+                <a href="{{ url_for('appointments') }}" class="btn btn-sm btn-outline-primary mt-2">Все записи →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Свободные окна -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-clock"></i> Свободные окна для записи
+            </div>
+            <div class="card-body">
+                {% if upcoming_slots %}
+                    <div class="list-group">
+                        {% for slot in upcoming_slots %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ slot.service.name }}</strong><br>
+                                    <small>{{ slot.start_time.strftime('%d.%m.%Y %H:%M') }}</small>
+                                </div>
+                                <form action="{{ url_for('book_slot', slot_id=slot.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-sm btn-success">Записаться</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Нет свободных окон</p>
+                {% endif %}
+                <a href="{{ url_for('free_slots') }}" class="btn btn-sm btn-outline-success mt-2">Все окна →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Персональные предложения -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <i class="bi bi-gift"></i> Персональные предложения
+            </div>
+            <div class="card-body">
+                {% if offers %}
+                    {% for offer in offers %}
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-tag-fill me-2"></i>
+                            <div>
+                                {{ offer.description }} (скидка {{ offer.discount_percent }}%)<br>
+                                <small>Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">Сейчас нет активных предложений</p>
+                {% endif %}
+                <a href="{{ url_for('offers') }}" class="btn btn-sm btn-outline-warning mt-2">Все акции →</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

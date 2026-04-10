@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-gift"></i> Мои персональные предложения</h2>
+
+{% if offers %}
+    <div class="row">
+        {% for offer in offers %}
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card border-warning h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offer.service.name }}</h5>
+                        <p class="card-text">{{ offer.description }}</p>
+                        <p class="card-text">
+                            <span class="badge bg-warning text-dark">Скидка {{ offer.discount_percent }}%</span>
+                        </p>
+                        <p class="card-text"><small class="text-muted">Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">На данный момент персональных предложений нет.</p>
+{% endif %}
+{% endblock %}

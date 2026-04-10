@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-calendar-plus"></i> Свободные окна для записи</h2>
+
+{% if slots_by_date %}
+    {% for date, slots in slots_by_date.items() %}
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <strong>{{ date | replace('-', '.') }}</strong>
+            </div>
+            <div class="card-body">
+                <div class="slot-grid">
+                    {% for slot in slots %}
+                        <div class="slot-card">
+                            <div class="fw-bold fs-5 mb-2">{{ slot.service.name }}</div>
+                            <div class="mb-2"><i class="bi bi-clock me-2"></i>{{ slot.start_time.strftime('%H:%M') }}</div>
+                            <div class="mb-2"><i class="bi bi-cash me-2"></i>{{ slot.service.price }} ₽</div>
+                            <div><i class="bi bi-hourglass-split me-2"></i>{{ slot.service.duration }} мин</div>
+                            <form action="{{ url_for('book_slot', slot_id=slot.id) }}" method="POST" class="mt-3">
+                                <button type="submit" class="btn btn-success w-100">Записаться</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-warning">Нет свободных окон в ближайшее время.</div>
+{% endif %}
+{% endblock %}
