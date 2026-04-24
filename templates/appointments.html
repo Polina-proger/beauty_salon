@@ -1,22 +1,43 @@
 {% extends "base.html" %}
+{% block title %}Активные записи | Beauty Salon{% endblock %}
 {% block content %}
-<h2 class="mb-4"><i class="bi bi-calendar-check"></i> Мои активные записи</h2>
+<section class="page-header glass-panel">
+    <span class="section-kicker">Управление визитами</span>
+    <h1>Активные записи клиента</h1>
+    <p>Здесь отображаются все подтвержденные предстоящие визиты. Запись можно просмотреть и при необходимости отменить.</p>
+</section>
 
 {% if appointments %}
-    <div class="list-group">
+    <section class="detail-grid">
         {% for appt in appointments %}
-            <div class="list-group-item">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ appt.service.name }}</h5>
-                    <small>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }}</small>
+            <article class="glass-panel detail-card">
+                <div class="detail-card-top">
+                    <div>
+                        <span class="status-chip status-active">Активна</span>
+                        <h2>{{ appt.service.name }}</h2>
+                    </div>
+                    <div class="price-chip">{{ appt.service.price }} ₽</div>
                 </div>
-                <p class="mb-1">Длительность: {{ appt.service.duration }} мин. | Цена: {{ appt.service.price }} ₽</p>
-                <span class="badge bg-primary">Активна</span>
-            </div>
+                <div class="detail-metrics">
+                    <div><span>Дата</span><strong>{{ appt.start_time.strftime('%d.%m.%Y') }}</strong></div>
+                    <div><span>Время</span><strong>{{ appt.start_time.strftime('%H:%M') }}</strong></div>
+                    <div><span>Длительность</span><strong>{{ appt.service.duration }} мин</strong></div>
+                </div>
+                <p class="detail-text">{{ appt.service.description }}</p>
+                <form action="{{ url_for('cancel_appointment', appointment_id=appt.id) }}" method="POST">
+                    <button type="submit" class="btn btn-outline-danger w-100">Отменить запись</button>
+                </form>
+            </article>
         {% endfor %}
-    </div>
+    </section>
 {% else %}
-    <div class="alert alert-info">У вас нет активных записей.</div>
-    <a href="{{ url_for('free_slots') }}" class="btn btn-success">Записаться на услугу</a>
+    <section class="glass-panel empty-shell">
+        <div class="empty-state">
+            <i class="bi bi-calendar2-x"></i>
+            <h2>Предстоящих записей нет</h2>
+            <p>Чтобы записаться на услугу, откройте раздел со свободными окнами и выберите удобное время.</p>
+            <a href="{{ url_for('free_slots') }}" class="btn btn-success">Перейти к бронированию</a>
+        </div>
+    </section>
 {% endif %}
 {% endblock %}

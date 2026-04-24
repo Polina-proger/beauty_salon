@@ -1,33 +1,44 @@
 {% extends "base.html" %}
+{% block title %}Вход | Beauty Salon{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-4">Вход в личный кабинет</h2>
-                <form method="POST">
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control", placeholder="your@email.com") }}
-                        {% for error in form.email.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                        {% for error in form.password.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    {{ form.submit(class="btn btn-primary w-100") }}
-                </form>
-                <hr>
-                <p class="text-center mb-0">Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрируйтесь</a></p>
-                <p class="text-center mt-2"><small>Демо: demo@example.com / demo123</small></p>
-            </div>
+<section class="auth-layout">
+    <div class="glass-panel auth-copy">
+        <span class="section-kicker">Сервис клиента салона услуг</span>
+        <h1>Удобный вход в личный кабинет клиента.</h1>
+        <p>После входа пользователь видит активные записи, историю посещений, свободные окна и персональные предложения без дополнительных звонков администратору.</p>
+        <div class="auth-feature-list">
+            <div><i class="bi bi-check2-circle"></i> Просмотр активных записей</div>
+            <div><i class="bi bi-check2-circle"></i> История визитов и статусы посещений</div>
+            <div><i class="bi bi-check2-circle"></i> Быстрый выбор свободных окон</div>
+            <div><i class="bi bi-check2-circle"></i> Персональные акции и скидки</div>
+        </div>
+        <div class="demo-box">
+            <strong>Демо-доступ</strong>
+            <span>`demo@example.com` / `demo123`</span>
         </div>
     </div>
-</div>
+
+    <div class="glass-panel auth-form-wrap">
+        <h2>Вход в систему</h2>
+        <form method="POST" class="auth-form">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="demo@example.com") }}
+                {% for error in form.email.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Введите пароль") }}
+                {% for error in form.password.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-primary w-100") }}
+        </form>
+        <p class="auth-switch">Нет аккаунта? <a href="{{ url_for('register') }}">Создать профиль</a></p>
+    </div>
+</section>
 {% endblock %}

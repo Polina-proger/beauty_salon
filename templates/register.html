@@ -1,38 +1,57 @@
 {% extends "base.html" %}
+{% block title %}Регистрация | Beauty Salon{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-4">Регистрация</h2>
-                <form method="POST">
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        {{ form.name.label(class="form-label") }}
-                        {{ form.name(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.phone.label(class="form-label") }}
-                        {{ form.phone(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.confirm.label(class="form-label") }}
-                        {{ form.confirm(class="form-control") }}
-                    </div>
-                    {{ form.submit(class="btn btn-primary w-100") }}
-                </form>
-                <hr>
-                <p class="text-center">Уже есть аккаунт? <a href="{{ url_for('login') }}">Войдите</a></p>
-            </div>
+<section class="auth-layout">
+    <div class="glass-panel auth-copy">
+        <span class="section-kicker">Регистрация клиента</span>
+        <h1>Создайте аккаунт и управляйте сервисом онлайн.</h1>
+        <p>После регистрации клиент получает персональный кабинет для записи на услуги, просмотра визитов и получения индивидуальных предложений.</p>
+        <div class="auth-feature-list">
+            <div><i class="bi bi-stars"></i> Самостоятельное бронирование без звонков</div>
+            <div><i class="bi bi-stars"></i> История завершенных и отмененных визитов</div>
+            <div><i class="bi bi-stars"></i> Персональные предложения после регистрации</div>
         </div>
     </div>
-</div>
+
+    <div class="glass-panel auth-form-wrap">
+        <h2>Регистрация</h2>
+        <form method="POST" class="auth-form">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control", placeholder="Ваше имя") }}
+                {% for error in form.name.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="name@example.com") }}
+                {% for error in form.email.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.phone.label(class="form-label") }}
+                {{ form.phone(class="form-control", placeholder="+7 999 000-00-00") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Минимум 6 символов") }}
+                {% for error in form.password.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.confirm.label(class="form-label") }}
+                {{ form.confirm(class="form-control", placeholder="Повторите пароль") }}
+                {% for error in form.confirm.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-primary w-100") }}
+        </form>
+        <p class="auth-switch">Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a></p>
+    </div>
+</section>
 {% endblock %}
