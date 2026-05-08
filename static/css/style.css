@@ -233,7 +233,7 @@ a {
     min-height: 88vh;
     background:
         linear-gradient(rgba(62, 18, 15, 0.12), rgba(62, 18, 15, 0.12)),
-        url("/static/images/landing/hero-side-tall.jpg") center/cover no-repeat,
+        url("/static/images/landing/hero-side-tall.png") center/cover no-repeat,
         linear-gradient(160deg, var(--green-accent), var(--wine));
 }
 
@@ -321,7 +321,7 @@ a {
     top: 12px;
     left: 26px;
     transform: rotate(-8deg);
-    background-image: url("/static/images/landing/about-editorial-main.jpg");
+    background-image: url("https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1500&dpr=2");
 }
 
 .story-photo-small-a {
@@ -330,7 +330,7 @@ a {
     top: 120px;
     left: 270px;
     transform: rotate(10deg);
-    background-image: url("/static/images/landing/about-editorial-side-a.jpg");
+    background-image: url("https://images.pexels.com/photos/3993304/pexels-photo-3993304.jpeg?auto=compress&cs=tinysrgb&w=900&h=1200&dpr=2");
 }
 
 .story-photo-small-b {
@@ -339,7 +339,7 @@ a {
     top: 312px;
     left: 214px;
     transform: rotate(-12deg);
-    background-image: url("/static/images/landing/about-editorial-side-b.jpg");
+    background-image: url("https://images.pexels.com/photos/6621331/pexels-photo-6621331.jpeg?auto=compress&cs=tinysrgb&w=900&h=1200&dpr=2");
 }
 
 .editorial-logo-band {
@@ -371,7 +371,7 @@ a {
     min-height: 72vh;
     background:
         linear-gradient(rgba(56, 18, 14, 0.18), rgba(56, 18, 14, 0.42)),
-        url("/static/images/landing/fullwidth-quote.jpg") center/cover no-repeat,
+        url("https://images.pexels.com/photos/7755650/pexels-photo-7755650.jpeg?auto=compress&cs=tinysrgb&w=2200&h=1400&dpr=2") center/cover no-repeat,
         linear-gradient(150deg, var(--green-accent), var(--wine));
     display: flex;
     align-items: center;
@@ -414,7 +414,7 @@ a {
     border-radius: 34px;
     background:
         linear-gradient(rgba(80, 25, 19, 0.15), rgba(80, 25, 19, 0.15)),
-        url("/static/images/landing/services-tall.jpg") center/cover no-repeat,
+        url("https://images.pexels.com/photos/3993455/pexels-photo-3993455.jpeg?auto=compress&cs=tinysrgb&w=1400&h=1900&dpr=2") center/cover no-repeat,
         linear-gradient(150deg, var(--wine), var(--green-accent));
     box-shadow: var(--shadow);
 }

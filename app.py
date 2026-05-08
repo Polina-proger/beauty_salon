@@ -65,7 +65,7 @@ MASTER_CATALOG = [
         "phone": "+7 913 555-20-10",
         "address": "ул. Ленина, 18, Новосибирск",
         "bio": "Отвечает за мягкие формы, воздушные укладки и премиальный клиентский сервис.",
-        "photo_filename": "master-sofia.jpg",
+        "photo_filename": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1000&h=1300&dpr=2",
         "services": ["Стрижка женская", "Стрижка мужская"],
     },
     {
@@ -74,7 +74,7 @@ MASTER_CATALOG = [
         "phone": "+7 913 555-20-11",
         "address": "ул. Ленина, 18, Новосибирск",
         "bio": "Специализируется на чистом маникюре, стойком покрытии и уходовых ритуалах.",
-        "photo_filename": "master-elena.jpg",
+        "photo_filename": "https://images.pexels.com/photos/3992876/pexels-photo-3992876.jpeg?auto=compress&cs=tinysrgb&w=1000&h=1300&dpr=2",
         "services": ["Маникюр"],
     },
     {
@@ -83,7 +83,7 @@ MASTER_CATALOG = [
         "phone": "+7 913 555-20-12",
         "address": "ул. Ленина, 18, Новосибирск",
         "bio": "Создает спокойный восстановительный опыт и помогает клиентам снять напряжение.",
-        "photo_filename": "master-maya.jpg",
+        "photo_filename": "https://images.pexels.com/photos/6621467/pexels-photo-6621467.jpeg?auto=compress&cs=tinysrgb&w=1000&h=1300&dpr=2",
         "services": ["Массаж спины"],
     },
 ]
