@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Подтверждение записи | {{ salon_name }}{% endblock %}
+{% block content %}
+<section class="booking-funnel-hero">
+    <div class="section-shell">
+        <span class="eyebrow">Final step</span>
+        <h1>Проверьте запись</h1>
+        <p>Больше ничего вводить не нужно. Если все верно, подтвердите визит.</p>
+    </div>
+</section>
+
+<section class="section-shell final-check-layout">
+    <article class="final-check-card">
+        <h2>{{ slot.service.name }}</h2>
+        <div class="confirm-grid">
+            <div><span>Дата</span><strong>{{ slot.start_time.strftime('%d.%m.%Y') }}</strong></div>
+            <div><span>Время</span><strong>{{ slot.start_time.strftime('%H:%M') }}</strong></div>
+            <div><span>Мастер</span><strong>{{ slot.master.name }}</strong></div>
+            <div><span>Специализация</span><strong>{{ slot.master.specialty }}</strong></div>
+            <div><span>Телефон</span><strong>{{ slot.master.phone }}</strong></div>
+            <div><span>Адрес</span><strong>{{ slot.master.address }}</strong></div>
+            <div><span>Стоимость</span><strong>{{ slot.service.price }} ₽</strong></div>
+            <div><span>Клиент</span><strong>{{ current_user.name }}</strong></div>
+        </div>
+        <form method="POST">
+            <button class="btn btn-primary w-100" type="submit">Подтвердить запись</button>
+        </form>
+    </article>
+</section>
+{% endblock %}

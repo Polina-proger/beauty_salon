@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}{{ salon_name }}{% endblock %}
+{% block content %}
+<section class="editorial-hero">
+    <div class="editorial-hero-copy">
+        <span class="eyebrow">Velvet Touch</span>
+        <h1>Салон, в котором красота начинается еще до визита.</h1>
+        <p>Премиальная атмосфера, спокойная цветовая палитра и понятная онлайн-запись без перегруза. Все выглядит эстетично и работает просто.</p>
+        <div class="hero-actions">
+            {% if current_user.is_authenticated and not current_user.is_admin %}
+                <a class="btn btn-primary" href="{{ url_for('free_slots') }}">Записаться</a>
+                <a class="btn btn-outline-light" href="{{ url_for('dashboard') }}">Личный кабинет</a>
+            {% elif current_user.is_authenticated and current_user.is_admin %}
+                <a class="btn btn-primary" href="{{ url_for('admin_dashboard') }}">Админка</a>
+            {% else %}
+                <a class="btn btn-primary" href="{{ url_for('register') }}">Записаться</a>
+                <a class="btn btn-outline-light" href="{{ url_for('login') }}">Войти</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="editorial-hero-cover"></div>
+</section>
+
+<section class="editorial-cream-band">
+    <div class="section-shell centered-copy">
+        <div class="floating-icon"><i class="bi bi-stars"></i></div>
+        <h2>Чистый и комфортный путь клиента: выберите услугу, время, мастера и подтвердите запись.</h2>
+        <p>Никаких лишних форм и хаотичных карточек. Интерфейс ведет пользователя шаг за шагом и показывает только нужную информацию в нужный момент.</p>
+    </div>
+</section>
+
+<section class="editorial-bordeaux-band">
+    <div class="section-shell story-grid">
+        <div class="story-collage">
+            <div class="story-photo story-photo-main"></div>
+            <div class="story-photo story-photo-small-a"></div>
+            <div class="story-photo story-photo-small-b"></div>
+        </div>
+        <div class="story-copy">
+            <span class="eyebrow">Velvet atmosphere</span>
+            <h2>Теплый бордовый характер, светлая база и аккуратный холодный акцент.</h2>
+            <p>Мы перестроили визуальный язык под moodboard из референса: большие фото, редакционная композиция, контрастные секции и более крупные шрифты для комфортного чтения.</p>
+            <a class="btn btn-outline-light" href="#velvet-services">Посмотреть услуги</a>
+        </div>
+    </div>
+</section>
+
+<section class="editorial-logo-band">
+    <div class="section-shell logo-row">
+        <span>Quiet luxury</span>
+        <strong>Velvet Ritual</strong>
+        <strong>Studio Glow</strong>
+        <strong>Soft Editorial</strong>
+        <strong>Beauty Lounge</strong>
+        <strong>Signature Care</strong>
+    </div>
+</section>
+
+<section class="editorial-quote-band">
+    <div class="quote-overlay">
+        <p>“{{ testimonial.quote }}”</p>
+        <span>{{ testimonial.author }}</span>
+    </div>
+</section>
+
+<section class="editorial-services-band" id="velvet-services">
+    <div class="section-shell services-split">
+        <div class="services-cover"></div>
+        <div class="services-copy">
+            <span class="eyebrow">Services</span>
+            <h2>Услуги и быстрый старт записи</h2>
+            <div class="landing-list">
+                {% for service in services %}
+                    <article class="landing-service-row">
+                        <div>
+                            <strong>{{ service.name }}</strong>
+                            <p>{{ service.description }}</p>
+                        </div>
+                        <div class="service-side-meta">
+                            <span>{{ service.duration }} мин</span>
+                            <span>{{ service.price }} ₽</span>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="editorial-masters-band">
+    <div class="section-shell">
+        <div class="section-heading-block">
+            <span class="eyebrow">Masters</span>
+            <h2>Команда Velvet Touch</h2>
+        </div>
+        <div class="masters-grid editorial-masters-grid">
+            {% for master in masters %}
+                <article class="master-card">
+                    <div class="master-photo" style="background-image: linear-gradient(rgba(94, 37, 30, 0.22), rgba(94, 37, 30, 0.22)), url('{{ url_for('static', filename='images/landing/' ~ (master.photo_filename or 'placeholder-master.jpg')) }}');"></div>
+                    <div class="master-card-copy">
+                        <h3>{{ master.name }}</h3>
+                        <span>{{ master.specialty }}</span>
+                        <p>{{ master.bio }}</p>
+                        <small>{{ master.phone }} · {{ master.address }}</small>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="editorial-cta-band">
+    <div class="section-shell cta-inner">
+        <div>
+            <span class="eyebrow">Open slots</span>
+            <h2>Ближайшие свободные окна</h2>
+        </div>
+        <div class="slot-preview-list">
+            {% for slot in preview_slots %}
+                <article class="slot-preview-item">
+                    <strong>{{ slot.service.name }}</strong>
+                    <p>{{ slot.start_time.strftime('%d.%m %H:%M') }} · {{ slot.master.name }}</p>
+                    {% if current_user.is_authenticated and not current_user.is_admin %}
+                        <a class="btn btn-sm btn-primary" href="{{ url_for('free_slots', service_id=slot.service_id, date=slot.start_time.strftime('%Y-%m-%d'), time=slot.start_time.strftime('%H:%M'), master=slot.master_id) }}">Выбрать</a>
+                    {% else %}
+                        <a class="btn btn-sm btn-primary" href="{{ url_for('login') }}">Войти</a>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,33 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Персональные предложения | Beauty Salon{% endblock %}
+{% block title %}Предложения | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="page-header glass-panel">
-    <span class="section-kicker">Маркетинг и удержание</span>
-    <h1>Персональные предложения</h1>
-    <p>В этом разделе клиент видит индивидуальные акции и понимает, какие визиты выгодно забронировать прямо сейчас.</p>
+<section class="simple-hero shell">
+    <div>
+        <span class="eyebrow">Personal offers</span>
+        <h1>Персональные предложения</h1>
+        <p>Актуальные скидки и бонусы для следующего визита.</p>
+    </div>
 </section>
 
-{% if offers %}
-    <section class="promo-grid">
+<section class="shell offer-board">
+    {% if offers %}
         {% for offer in offers %}
-            <article class="glass-panel promo-full-card">
-                <div class="promo-badge">-{{ offer.discount_percent }}%</div>
-                <span class="section-kicker">Специальное предложение</span>
+            <article class="offer-card">
+                <span class="offer-mark">-{{ offer.discount_percent }}%</span>
                 <h2>{{ offer.service.name }}</h2>
                 <p>{{ offer.description }}</p>
-                <div class="appointment-meta">
-                    <span><i class="bi bi-calendar-heart"></i> Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</span>
-                    <span><i class="bi bi-cash-coin"></i> Экономия до {{ (offer.service.price * offer.discount_percent / 100)|round|int }} ₽</span>
-                </div>
+                <small>Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</small>
             </article>
         {% endfor %}
-    </section>
-{% else %}
-    <section class="glass-panel empty-shell">
-        <div class="empty-state compact">
-            <h2>Пока нет активных акций</h2>
-            <p>Когда салон сформирует персональные предложения, они появятся здесь.</p>
-        </div>
-    </section>
-{% endif %}
+    {% else %}
+        <article class="clean-card">
+            <p class="muted-paragraph">Пока нет активных предложений.</p>
+        </article>
+    {% endif %}
+</section>
 {% endblock %}

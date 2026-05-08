@@ -1,70 +1,115 @@
 {% extends "base.html" %}
-{% block title %}Свободные окна | Beauty Salon{% endblock %}
+{% block title %}Запись | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="page-header glass-panel">
-    <span class="section-kicker">Онлайн-запись</span>
-    <h1>Свободные окна</h1>
-    <p>Фильтруйте расписание по услуге и дате, чтобы быстро найти подходящее время для записи.</p>
+<section class="booking-funnel-hero">
+    <div class="section-shell">
+        <span class="eyebrow">Booking funnel</span>
+        <h1>Записаться</h1>
+        <p>Упрощенный путь записи: выберите услугу, затем дату и время, после этого мастера или вариант “неважно”, а в конце просто сверьте данные визита.</p>
+    </div>
 </section>
 
-<section class="glass-panel filter-panel">
-    <form method="GET" class="filter-form">
-        <div>
-            <label class="form-label" for="service_id">Услуга</label>
-            <select class="form-select" id="service_id" name="service_id">
-                <option value="">Все услуги</option>
-                {% for service in services %}
-                    <option value="{{ service.id }}" {% if selected_service_id == service.id %}selected{% endif %}>{{ service.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label class="form-label" for="date">Дата</label>
-            <input class="form-control" id="date" type="date" name="date" value="{{ selected_date }}">
-        </div>
-        <div class="filter-actions">
-            <button type="submit" class="btn btn-primary">Применить фильтры</button>
-            <a href="{{ url_for('free_slots') }}" class="btn btn-outline-light">Сбросить</a>
-        </div>
-        <div class="filter-note">
-            Найдено свободных окон: <strong>{{ slots_count }}</strong>
-        </div>
-    </form>
-</section>
+<section class="section-shell">
+    <div class="funnel-steps">
+        <div class="funnel-step {% if selected_service %}done{% else %}current{% endif %}"><span>1</span><strong>Услуга</strong></div>
+        <div class="funnel-step {% if selected_date %}done{% elif selected_service %}current{% endif %}"><span>2</span><strong>Когда</strong></div>
+        <div class="funnel-step {% if selected_master %}done{% elif selected_time %}current{% endif %}"><span>3</span><strong>К кому</strong></div>
+        <div class="funnel-step {% if selected_slot %}current{% endif %}"><span>4</span><strong>Проверка записи</strong></div>
+    </div>
 
-{% if slots_by_date %}
-    <section class="date-sections">
-        {% for date, slots in slots_by_date.items() %}
-            <article class="glass-panel date-card">
-                <div class="section-heading">
-                    <div>
-                        <span class="section-kicker">Доступное расписание</span>
-                        <h2>{{ date }}</h2>
+    <div class="funnel-layout">
+        <article class="funnel-card">
+            <div class="section-heading-block">
+                <span class="eyebrow">Step 1</span>
+                <h2>На какую услугу</h2>
+            </div>
+            <form method="GET" class="service-pick-form">
+                <select class="form-select" name="service_id">
+                    <option value="">Выберите услугу</option>
+                    {% for service in services %}
+                        <option value="{{ service.id }}" {% if selected_service_id == service.id %}selected{% endif %}>{{ service.name }} · {{ service.price }} ₽</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary" type="submit">Продолжить</button>
+            </form>
+
+            {% if selected_service %}
+                <div class="selected-chip">Выбрано: {{ selected_service.name }}</div>
+            {% endif %}
+        </article>
+
+        <article class="funnel-card {% if not selected_service %}disabled-card{% endif %}">
+            <div class="section-heading-block">
+                <span class="eyebrow">Step 2</span>
+                <h2>Когда и во сколько</h2>
+            </div>
+            {% if selected_service %}
+                <div class="choice-group">
+                    <h3>Дата</h3>
+                    <div class="choice-chips">
+                        {% for item in available_dates %}
+                            <a class="choice-chip {% if selected_date == item.strftime('%Y-%m-%d') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=item.strftime('%Y-%m-%d')) }}">{{ item.strftime('%d.%m') }}</a>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="slot-preview-grid">
-                    {% for slot in slots %}
-                        <div class="slot-preview-card">
-                            <span class="slot-service">{{ slot.service.name }}</span>
-                            <h3>{{ slot.start_time.strftime('%H:%M') }}</h3>
-                            <p>{{ slot.service.duration }} мин · {{ slot.service.price }} ₽</p>
-                            <form action="{{ url_for('book_slot', slot_id=slot.id) }}" method="POST">
-                                <button type="submit" class="btn btn-success w-100">Забронировать</button>
-                            </form>
+
+                {% if available_times %}
+                    <div class="choice-group">
+                        <h3>Время</h3>
+                        <div class="choice-chips">
+                            {% for item in available_times %}
+                                <a class="choice-chip {% if selected_time == item %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=item) }}">{{ item }}</a>
+                            {% endfor %}
                         </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="muted-dark">Сначала выберите услугу.</p>
+            {% endif %}
+        </article>
+
+        <article class="funnel-card {% if not selected_time %}disabled-card{% endif %}">
+            <div class="section-heading-block">
+                <span class="eyebrow">Step 3</span>
+                <h2>К кому или неважно</h2>
+            </div>
+            {% if master_slots %}
+                <div class="choice-chips vertical">
+                    <a class="choice-chip {% if selected_master == 'any' %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master='any') }}">
+                        Неважно, любой мастер
+                    </a>
+                    {% for slot in master_slots %}
+                        <a class="choice-chip {% if selected_master == (slot.master_id ~ '') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master=slot.master_id) }}">
+                            {{ slot.master.name }} · {{ slot.master.specialty }}
+                        </a>
                     {% endfor %}
                 </div>
-            </article>
-        {% endfor %}
-    </section>
-{% else %}
-    <section class="glass-panel empty-shell">
-        <div class="empty-state">
-            <i class="bi bi-search-heart"></i>
-            <h2>По текущим фильтрам свободных окон нет</h2>
-            <p>Попробуйте снять фильтры или выбрать другую дату.</p>
-            <a href="{{ url_for('free_slots') }}" class="btn btn-primary">Показать все окна</a>
-        </div>
+            {% elif selected_time %}
+                <p class="muted-dark">На это время свободных мастеров нет.</p>
+            {% else %}
+                <p class="muted-dark">Сначала выберите дату и время.</p>
+            {% endif %}
+        </article>
+    </div>
+</section>
+
+{% if selected_slot %}
+    <section class="section-shell confirm-block">
+        <article class="confirm-card">
+            <div class="section-heading-block">
+                <span class="eyebrow">Step 4</span>
+                <h2>Сверьте данные записи</h2>
+            </div>
+            <div class="confirm-grid">
+                <div><span>Услуга</span><strong>{{ selected_slot.service.name }}</strong></div>
+                <div><span>Дата</span><strong>{{ selected_date_label }}</strong></div>
+                <div><span>Время</span><strong>{{ selected_time }}</strong></div>
+                <div><span>Мастер</span><strong>{{ selected_slot.master.name }}</strong></div>
+                <div><span>Телефон</span><strong>{{ selected_slot.master.phone }}</strong></div>
+                <div><span>Адрес</span><strong>{{ selected_slot.master.address }}</strong></div>
+            </div>
+            <a class="btn btn-primary" href="{{ url_for('book_slot', slot_id=selected_slot.id) }}">Перейти к подтверждению</a>
+        </article>
     </section>
 {% endif %}
 {% endblock %}

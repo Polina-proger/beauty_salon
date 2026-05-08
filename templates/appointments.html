@@ -1,43 +1,45 @@
 {% extends "base.html" %}
-{% block title %}Активные записи | Beauty Salon{% endblock %}
+{% block title %}Мои записи | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="page-header glass-panel">
-    <span class="section-kicker">Управление визитами</span>
-    <h1>Активные записи клиента</h1>
-    <p>Здесь отображаются все подтвержденные предстоящие визиты. Запись можно просмотреть и при необходимости отменить.</p>
+<section class="simple-hero shell">
+    <div>
+        <span class="eyebrow">Appointments</span>
+        <h1>Активные записи</h1>
+        <p>В карточке видно, к какому мастеру вы записаны, кто бронировал визит, какой номер телефона и по какому адресу пройдет прием.</p>
+    </div>
 </section>
 
-{% if appointments %}
-    <section class="detail-grid">
+<section class="shell detail-stack">
+    {% if appointments %}
         {% for appt in appointments %}
-            <article class="glass-panel detail-card">
-                <div class="detail-card-top">
+            <article class="detail-card">
+                <div class="detail-card-head">
                     <div>
-                        <span class="status-chip status-active">Активна</span>
                         <h2>{{ appt.service.name }}</h2>
+                        <p>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }}</p>
                     </div>
-                    <div class="price-chip">{{ appt.service.price }} ₽</div>
+                    <span class="status-pill active">Активна</span>
                 </div>
-                <div class="detail-metrics">
-                    <div><span>Дата</span><strong>{{ appt.start_time.strftime('%d.%m.%Y') }}</strong></div>
-                    <div><span>Время</span><strong>{{ appt.start_time.strftime('%H:%M') }}</strong></div>
-                    <div><span>Длительность</span><strong>{{ appt.service.duration }} мин</strong></div>
+                <div class="detail-grid">
+                    <div><span>Мастер</span><strong>{{ appt.master.name }}</strong></div>
+                    <div><span>Телефон мастера</span><strong>{{ appt.master.phone }}</strong></div>
+                    <div><span>Адрес салона</span><strong>{{ appt.master.address }}</strong></div>
+                    <div><span>Кто записан</span><strong>{{ appt.booked_by_name }}</strong></div>
+                    <div><span>Телефон клиента</span><strong>{{ appt.booked_by_phone }}</strong></div>
+                    <div><span>Стоимость</span><strong>{{ appt.service.price }} ₽</strong></div>
                 </div>
-                <p class="detail-text">{{ appt.service.description }}</p>
-                <form action="{{ url_for('cancel_appointment', appointment_id=appt.id) }}" method="POST">
-                    <button type="submit" class="btn btn-outline-danger w-100">Отменить запись</button>
+                {% if appt.notes %}
+                    <p class="detail-note">{{ appt.notes }}</p>
+                {% endif %}
+                <form method="POST" action="{{ url_for('cancel_appointment', appointment_id=appt.id) }}">
+                    <button class="btn btn-outline-danger" type="submit">Отменить запись</button>
                 </form>
             </article>
         {% endfor %}
-    </section>
-{% else %}
-    <section class="glass-panel empty-shell">
-        <div class="empty-state">
-            <i class="bi bi-calendar2-x"></i>
-            <h2>Предстоящих записей нет</h2>
-            <p>Чтобы записаться на услугу, откройте раздел со свободными окнами и выберите удобное время.</p>
-            <a href="{{ url_for('free_slots') }}" class="btn btn-success">Перейти к бронированию</a>
-        </div>
-    </section>
-{% endif %}
+    {% else %}
+        <article class="clean-card">
+            <p class="muted-paragraph">Активных записей пока нет. Перейдите к свободным окнам и выберите удобное время.</p>
+        </article>
+    {% endif %}
+</section>
 {% endblock %}

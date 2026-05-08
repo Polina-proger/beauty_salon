@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Beauty Salon Client Space{% endblock %}</title>
+    <title>{% block title %}{{ salon_name }}{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,81 +11,40 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="ambient ambient-one"></div>
-    <div class="ambient ambient-two"></div>
-
-    <nav class="navbar navbar-expand-lg salon-navbar">
-        <div class="container-fluid nav-shell">
-            <a class="navbar-brand brand-mark" href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('login') }}">
-                <span class="brand-icon"><i class="bi bi-stars"></i></span>
+<body class="{% block body_class %}site-body{% endblock %}">
+    <nav class="site-nav">
+        <div class="shell nav-inner">
+            <a class="brand-link" href="{{ url_for('index') }}">
+                <span class="brand-mark">VT</span>
                 <span>
-                    <strong>Beauty Salon</strong>
-                    <small>Client Space</small>
+                    <strong>{{ salon_name }}</strong>
+                    <small>Premium beauty lounge</small>
                 </span>
             </a>
 
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
-                                <i class="bi bi-grid-1x2"></i> Обзор
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'appointments' %}active{% endif %}" href="{{ url_for('appointments') }}">
-                                <i class="bi bi-calendar-check"></i> Активные записи
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'history' %}active{% endif %}" href="{{ url_for('history') }}">
-                                <i class="bi bi-clock-history"></i> История
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'free_slots' %}active{% endif %}" href="{{ url_for('free_slots') }}">
-                                <i class="bi bi-calendar-plus"></i> Свободные окна
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'offers' %}active{% endif %}" href="{{ url_for('offers') }}">
-                                <i class="bi bi-gift"></i> Предложения
-                            </a>
-                        </li>
-                        <li class="nav-item nav-user-chip">
-                            <span class="nav-link disabled">
-                                <i class="bi bi-person-circle"></i> {{ current_user.name }}
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link logout-link" href="{{ url_for('logout') }}">
-                                <i class="bi bi-box-arrow-right"></i> Выход
-                            </a>
-                        </li>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_admin %}
+                        <a href="{{ url_for('admin_dashboard') }}">Админка</a>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'login' %}active{% endif %}" href="{{ url_for('login') }}">Вход</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'register' %}active{% endif %}" href="{{ url_for('register') }}">Регистрация</a>
-                        </li>
+                        <a href="{{ url_for('dashboard') }}">Кабинет</a>
+                        <a href="{{ url_for('free_slots') }}">Записаться</a>
                     {% endif %}
-                </ul>
+                    <a href="{{ url_for('logout') }}">Выход</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Вход</a>
+                    <a class="nav-cta" href="{{ url_for('register') }}">Записаться</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
-    <main class="main-container">
+    <main class="page-shell">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-stack">
+                <div class="shell flash-wrap">
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                             {{ message }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>

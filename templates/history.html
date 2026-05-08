@@ -1,39 +1,39 @@
 {% extends "base.html" %}
-{% block title %}История визитов | Beauty Salon{% endblock %}
+{% block title %}История визитов | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="page-header glass-panel">
-    <span class="section-kicker">Прозрачность сервиса</span>
-    <h1>История визитов</h1>
-    <p>Клиент видит завершенные и отмененные записи, поэтому может быстро восстановить историю взаимодействия с салоном.</p>
+<section class="simple-hero shell">
+    <div>
+        <span class="eyebrow">History</span>
+        <h1>История визитов</h1>
+        <p>Здесь собраны завершенные и отмененные записи, чтобы пользователь понимал свою историю взаимодействия с салоном.</p>
+    </div>
 </section>
 
-{% if appointments %}
-    <section class="history-list">
+<section class="shell detail-stack">
+    {% if appointments %}
         {% for appt in appointments %}
-            <article class="glass-panel history-card">
-                <div class="history-top">
+            <article class="detail-card">
+                <div class="detail-card-head">
                     <div>
                         <h2>{{ appt.service.name }}</h2>
-                        <p>{{ appt.start_time.strftime('%d.%m.%Y в %H:%M') }}</p>
+                        <p>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }} · {{ appt.master.name }}</p>
                     </div>
-                    <span class="status-chip {% if appt.status == 'completed' %}status-completed{% else %}status-cancelled{% endif %}">
-                        {% if appt.status == 'completed' %}Завершен{% else %}Отменен{% endif %}
+                    <span class="status-pill {% if appt.status == 'completed' %}done{% else %}cancel{% endif %}">
+                        {{ 'Завершен' if appt.status == 'completed' else 'Отменен' }}
                     </span>
                 </div>
-                <div class="appointment-meta">
-                    <span><i class="bi bi-hourglass-split"></i> {{ appt.service.duration }} мин</span>
-                    <span><i class="bi bi-cash-stack"></i> {{ appt.service.price }} ₽</span>
+                <div class="detail-grid">
+                    <div><span>Мастер</span><strong>{{ appt.master.name }}</strong></div>
+                    <div><span>Телефон</span><strong>{{ appt.master.phone }}</strong></div>
+                    <div><span>Адрес</span><strong>{{ appt.master.address }}</strong></div>
+                    <div><span>Кто бронировал</span><strong>{{ appt.booked_by_name }}</strong></div>
                 </div>
-                <p class="detail-text">{{ appt.service.description }}</p>
             </article>
         {% endfor %}
-    </section>
-{% else %}
-    <section class="glass-panel empty-shell">
-        <div class="empty-state compact">
-            <h2>История пока пуста</h2>
-            <p>После первых посещений здесь появится полный список прошлых визитов.</p>
-        </div>
-    </section>
-{% endif %}
+    {% else %}
+        <article class="clean-card">
+            <p class="muted-paragraph">История пока пуста.</p>
+        </article>
+    {% endif %}
+</section>
 {% endblock %}

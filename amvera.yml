@@ -1,0 +1,13 @@
+meta:
+  environment: python
+  toolchain:
+    name: pip
+    version: 3.11          # или ваша версия Python
+
+build:
+  requirementsPath: requirements.txt   # путь к файлу зависимостей
+
+run:
+  command: gunicorn app:app --bind 0.0.0.0:80
+  persistenceMount: /beauty_salon    
+  containerPort: 80

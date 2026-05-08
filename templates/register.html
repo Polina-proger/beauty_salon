@@ -1,35 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Регистрация | Beauty Salon{% endblock %}
+{% block title %}Регистрация | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="auth-layout">
-    <div class="glass-panel auth-copy">
-        <span class="section-kicker">Регистрация клиента</span>
-        <h1>Создайте аккаунт и управляйте сервисом онлайн.</h1>
-        <p>После регистрации клиент получает персональный кабинет для записи на услуги, просмотра визитов и получения индивидуальных предложений.</p>
-        <div class="auth-feature-list">
-            <div><i class="bi bi-stars"></i> Самостоятельное бронирование без звонков</div>
-            <div><i class="bi bi-stars"></i> История завершенных и отмененных визитов</div>
-            <div><i class="bi bi-stars"></i> Персональные предложения после регистрации</div>
-        </div>
+<section class="auth-shell shell">
+    <div class="auth-info">
+        <span class="eyebrow">Join Velvet Touch</span>
+        <h1>Создайте аккаунт и записывайтесь без звонков</h1>
+        <p>После регистрации клиент сразу получает доступ к понятному пути записи: свободные окна, карточка мастера, адрес салона и детали брони отображаются в одном месте.</p>
     </div>
-
-    <div class="glass-panel auth-form-wrap">
+    <div class="auth-card">
         <h2>Регистрация</h2>
-        <form method="POST" class="auth-form">
+        <form method="POST">
             {{ form.hidden_tag() }}
             <div class="mb-3">
                 {{ form.name.label(class="form-label") }}
                 {{ form.name(class="form-control", placeholder="Ваше имя") }}
-                {% for error in form.name.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
             </div>
             <div class="mb-3">
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control", placeholder="name@example.com") }}
-                {% for error in form.email.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
             </div>
             <div class="mb-3">
                 {{ form.phone.label(class="form-label") }}
@@ -38,20 +26,14 @@
             <div class="mb-3">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control", placeholder="Минимум 6 символов") }}
-                {% for error in form.password.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
             </div>
             <div class="mb-3">
                 {{ form.confirm.label(class="form-label") }}
                 {{ form.confirm(class="form-control", placeholder="Повторите пароль") }}
-                {% for error in form.confirm.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
             </div>
             {{ form.submit(class="btn btn-primary w-100") }}
         </form>
-        <p class="auth-switch">Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a></p>
+        <p class="auth-footer">Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a></p>
     </div>
 </section>
 {% endblock %}

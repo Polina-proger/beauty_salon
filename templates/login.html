@@ -1,44 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Вход | Beauty Salon{% endblock %}
+{% block title %}Вход | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="auth-layout">
-    <div class="glass-panel auth-copy">
-        <span class="section-kicker">Сервис клиента салона услуг</span>
-        <h1>Удобный вход в личный кабинет клиента.</h1>
-        <p>После входа пользователь видит активные записи, историю посещений, свободные окна и персональные предложения без дополнительных звонков администратору.</p>
-        <div class="auth-feature-list">
-            <div><i class="bi bi-check2-circle"></i> Просмотр активных записей</div>
-            <div><i class="bi bi-check2-circle"></i> История визитов и статусы посещений</div>
-            <div><i class="bi bi-check2-circle"></i> Быстрый выбор свободных окон</div>
-            <div><i class="bi bi-check2-circle"></i> Персональные акции и скидки</div>
-        </div>
-        <div class="demo-box">
-            <strong>Демо-доступ</strong>
-            <span>`demo@example.com` / `demo123`</span>
+<section class="auth-shell shell">
+    <div class="auth-info">
+        <span class="eyebrow">Welcome back</span>
+        <h1>Вход в систему {{ salon_name }}</h1>
+        <p>Клиенту доступны личный кабинет, быстрая запись и история визитов. Администратору доступны мастера, окна и управление всеми заявками.</p>
+        <div class="credentials-box">
+            <strong>Клиент:</strong> `demo@example.com` / `demo123`<br>
+            <strong>Админ:</strong> `admin@velvettouch.ru` / `admin123`
         </div>
     </div>
-
-    <div class="glass-panel auth-form-wrap">
-        <h2>Вход в систему</h2>
-        <form method="POST" class="auth-form">
+    <div class="auth-card">
+        <h2>Войти</h2>
+        <form method="POST">
             {{ form.hidden_tag() }}
             <div class="mb-3">
                 {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control", placeholder="demo@example.com") }}
-                {% for error in form.email.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
+                {{ form.email(class="form-control", placeholder="name@example.com") }}
             </div>
             <div class="mb-3">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control", placeholder="Введите пароль") }}
-                {% for error in form.password.errors %}
-                    <div class="text-danger small mt-1">{{ error }}</div>
-                {% endfor %}
             </div>
             {{ form.submit(class="btn btn-primary w-100") }}
         </form>
-        <p class="auth-switch">Нет аккаунта? <a href="{{ url_for('register') }}">Создать профиль</a></p>
+        <p class="auth-footer">Нет профиля? <a href="{{ url_for('register') }}">Зарегистрироваться</a></p>
     </div>
 </section>
 {% endblock %}
