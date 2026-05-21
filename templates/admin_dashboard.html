@@ -1,11 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Админка | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="simple-hero shell admin-hero">
-    <div>
-        <span class="eyebrow">Admin panel</span>
-        <h1>Панель администратора</h1>
-        <p>Здесь можно добавлять мастеров, создавать окна и регулировать записи клиентов.</p>
+<section class="simple-center-shell shell">
+    <span class="eyebrow">Admin panel</span>
+    <h1>Панель администратора</h1>
+    <p class="center-subtitle">Выберите действие. Каждое действие открывается на отдельной странице с крупными элементами и простой структурой.</p>
+
+    <div class="center-button-grid admin-button-grid">
+        <a class="center-link-card primary-card" href="{{ url_for('admin_add_slot') }}">
+            <span>1</span>
+            <strong>Создать окно</strong>
+            <p>Открыть страницу расписания</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('admin_add_master') }}">
+            <span>2</span>
+            <strong>Добавить мастера</strong>
+            <p>Открыть отдельную форму</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('admin_masters_list') }}">
+            <span>{{ stats.masters }}</span>
+            <strong>Список мастеров</strong>
+            <p>Посмотреть всю команду</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('admin_appointments') }}">
+            <span>{{ stats.future_appointments }}</span>
+            <strong>Управление записями</strong>
+            <p>Открыть ближайшие записи</p>
+        </a>
     </div>
 </section>
 
@@ -14,89 +35,5 @@
     <article><span>Мастера</span><strong>{{ stats.masters }}</strong></article>
     <article><span>Будущие записи</span><strong>{{ stats.future_appointments }}</strong></article>
     <article><span>Свободные окна</span><strong>{{ stats.free_slots }}</strong></article>
-</section>
-
-<section class="shell admin-grid">
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Masters</span>
-            <h2>Добавить мастера</h2>
-        </div>
-        <form method="POST" action="{{ url_for('admin_add_master') }}">
-            {{ master_form.hidden_tag() }}
-            <div class="mb-3">{{ master_form.name.label(class="form-label") }}{{ master_form.name(class="form-control") }}</div>
-            <div class="mb-3">{{ master_form.specialty.label(class="form-label") }}{{ master_form.specialty(class="form-control") }}</div>
-            <div class="mb-3">{{ master_form.phone.label(class="form-label") }}{{ master_form.phone(class="form-control") }}</div>
-            <div class="mb-3">{{ master_form.address.label(class="form-label") }}{{ master_form.address(class="form-control") }}</div>
-            <div class="mb-3">{{ master_form.photo_filename.label(class="form-label") }}{{ master_form.photo_filename(class="form-control", placeholder="master-name.jpg") }}</div>
-            <div class="mb-3">{{ master_form.bio.label(class="form-label") }}{{ master_form.bio(class="form-control", rows="4") }}</div>
-            {{ master_form.submit(class="btn btn-primary w-100") }}
-        </form>
-    </article>
-
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Schedule</span>
-            <h2>Создать окно</h2>
-        </div>
-        <form method="POST" action="{{ url_for('admin_add_slot') }}">
-            {{ slot_form.hidden_tag() }}
-            <div class="mb-3">{{ slot_form.service_id.label(class="form-label") }}{{ slot_form.service_id(class="form-select") }}</div>
-            <div class="mb-3">{{ slot_form.master_id.label(class="form-label") }}{{ slot_form.master_id(class="form-select") }}</div>
-            <div class="mb-3">{{ slot_form.date.label(class="form-label") }}{{ slot_form.date(class="form-control") }}</div>
-            <div class="mb-3">{{ slot_form.slot_time.label(class="form-label") }}{{ slot_form.slot_time(class="form-control") }}</div>
-            {{ slot_form.submit(class="btn btn-primary w-100") }}
-        </form>
-    </article>
-    
-    <article class="clean-card admin-wide">
-        <div class="section-heading-block">
-            <span class="eyebrow">Team</span>
-            <h2>Мастера</h2>
-        </div>
-        <div class="masters-list">
-            {% for master in masters %}
-                <div class="booking-line">
-                    <div>
-                        <strong>{{ master.name }}</strong>
-                        <p>{{ master.specialty }} · {{ master.phone }}</p>
-                    </div>
-                    <small>{{ master.address }}</small>
-                </div>
-            {% endfor %}
-        </div>
-    </article>
-
-    <article class="clean-card admin-wide">
-        <div class="section-heading-block">
-            <span class="eyebrow">Appointments</span>
-            <h2>Регулирование записей</h2>
-        </div>
-        <div class="admin-appointments">
-            {% for appt in appointments %}
-                <div class="admin-appointment-card">
-                    <div>
-                        <strong>{{ appt.service.name }}</strong>
-                        <p>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }} · {{ appt.master.name }}</p>
-                        <small>{{ appt.booked_by_name }} · {{ appt.booked_by_phone }} · {{ appt.master.address }}</small>
-                    </div>
-                    <div class="admin-actions">
-                        <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
-                            <input type="hidden" name="status" value="active">
-                            <button class="btn btn-sm btn-outline-light" type="submit">Активна</button>
-                        </form>
-                        <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
-                            <input type="hidden" name="status" value="completed">
-                            <button class="btn btn-sm btn-outline-light" type="submit">Завершить</button>
-                        </form>
-                        <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
-                            <input type="hidden" name="status" value="cancelled">
-                            <button class="btn btn-sm btn-outline-danger" type="submit">Отменить</button>
-                        </form>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </article>
 </section>
 {% endblock %}

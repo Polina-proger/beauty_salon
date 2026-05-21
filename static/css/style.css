@@ -688,9 +688,45 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+.offer-wide-shell {
+    max-width: 1380px;
+}
+
+.offer-showcase-grid {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 22px;
+}
+
 .offer-card {
     background: linear-gradient(155deg, var(--wine), var(--wine-dark));
     color: var(--white);
+    overflow: hidden;
+    padding: 0;
+}
+
+.offer-card-media {
+    min-height: 240px;
+    background-size: cover;
+    background-position: center;
+}
+
+.offer-card-copy {
+    padding: 26px 24px 24px;
+}
+
+.new-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 245, 236, 0.16);
+    color: var(--white);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .offer-card p,
@@ -704,6 +740,145 @@ a {
     padding: 10px 14px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.12);
+}
+
+.loyalty-preview-card {
+    margin-top: 18px;
+    background: linear-gradient(155deg, rgba(111, 44, 36, 0.98), rgba(74, 29, 25, 0.98)) !important;
+    color: var(--white) !important;
+}
+
+.loyalty-preview-card span,
+.loyalty-preview-card p {
+    color: rgba(255, 245, 236, 0.86) !important;
+}
+
+.loyalty-preview-card strong {
+    color: var(--white) !important;
+}
+
+.loyalty-board,
+.recommendation-stack {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.loyalty-hero-card {
+    background: linear-gradient(155deg, var(--wine), var(--wine-dark));
+    color: var(--white);
+}
+
+.loyalty-hero-card p,
+.loyalty-hero-card small {
+    color: rgba(255, 245, 236, 0.82);
+}
+
+.loyalty-progress {
+    width: 100%;
+    height: 16px;
+    margin: 18px 0 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.loyalty-progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f3dac5, #ffffff);
+}
+
+.loyalty-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.loyalty-mini-card span {
+    display: block;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.loyalty-mini-card strong {
+    font-size: 2.3rem;
+    font-family: "Cormorant Garamond", serif;
+}
+
+.recommendation-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bonus-wide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.recommendation-card {
+    overflow: hidden;
+    padding: 0;
+}
+
+.recommendation-media {
+    min-height: 260px;
+    background-size: cover;
+    background-position: center;
+}
+
+.recommendation-content {
+    padding: 24px;
+}
+
+.recommendation-content .new-badge {
+    margin-left: 0;
+    margin-bottom: 12px;
+    background: rgba(111, 44, 36, 0.1);
+    color: var(--wine);
+}
+
+.recommendation-card h3 {
+    margin: 0 0 12px;
+    font-size: 2rem;
+    line-height: 1;
+    font-family: "Cormorant Garamond", serif;
+}
+
+.recommendation-card p {
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+.recommendation-card .btn {
+    margin-top: 18px;
+    width: 100%;
+}
+
+.recommendation-mark {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(111, 44, 36, 0.08);
+    color: var(--wine);
+    font-weight: 700;
+}
+
+.recommendation-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-top: 18px;
+}
+
+.recommendation-footer strong {
+    font-size: 1.15rem;
+}
+
+.recommendation-footer span {
+    color: var(--muted);
+    font-weight: 700;
 }
 
 .auth-shell {
@@ -889,6 +1064,339 @@ a {
     gap: 14px;
 }
 
+.simple-center-shell {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 42px 0 28px;
+    text-align: center;
+}
+
+.simple-center-shell h1 {
+    font-size: clamp(3.1rem, 6vw, 5.2rem);
+    line-height: 0.94;
+    margin: 0 0 16px;
+}
+
+.center-subtitle {
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 1.18rem;
+    line-height: 1.8;
+}
+
+.center-highlight-card {
+    max-width: 620px;
+    margin: 28px auto 0;
+    padding: 26px 28px;
+    border-radius: 28px;
+    background: rgba(255, 251, 246, 0.92);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+}
+
+.center-highlight-card span {
+    display: block;
+    color: var(--wine);
+    font-size: 0.86rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.center-highlight-card strong {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.6rem;
+    line-height: 0.96;
+    margin-bottom: 10px;
+}
+
+.center-highlight-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.center-button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 32px;
+}
+
+.center-link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 210px;
+    padding: 28px 24px;
+    border-radius: 30px;
+    background: rgba(255, 251, 246, 0.92);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.center-link-card span {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(111, 44, 36, 0.08);
+    color: var(--wine);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.center-link-card strong {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.2rem;
+    line-height: 0.96;
+}
+
+.center-link-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.65;
+}
+
+.primary-card {
+    background: linear-gradient(155deg, var(--wine), var(--wine-dark));
+    color: var(--white);
+}
+
+.primary-card span {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--white);
+}
+
+.primary-card p {
+    color: rgba(255, 245, 236, 0.82);
+}
+
+.admin-button-grid {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-inline-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.btn-dark-soft {
+    background: rgba(111, 44, 36, 0.1);
+    color: var(--wine);
+    border: 1px solid rgba(111, 44, 36, 0.16);
+}
+
+.narrow-shell {
+    max-width: 900px;
+}
+
+.admin-masters-shell {
+    max-width: 1480px;
+}
+
+.admin-appointments-shell {
+    max-width: 1280px;
+}
+
+.admin-page-card {
+    padding: 34px;
+    border-radius: 32px;
+    border: 1px solid var(--line);
+    background: rgba(255, 251, 246, 0.96);
+    box-shadow: var(--shadow);
+}
+
+.admin-large-form .form-label {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: var(--wine-dark);
+}
+
+.admin-large-form .form-control,
+.admin-large-form .form-select {
+    min-height: 66px;
+    font-size: 1.12rem;
+    padding: 18px 20px;
+    border-radius: 18px;
+}
+
+.admin-large-form textarea.form-control {
+    min-height: 180px;
+}
+
+.admin-submit-btn {
+    min-height: 68px;
+    font-size: 1.2rem;
+    border-radius: 22px;
+}
+
+.admin-list-card .detail-card-head h2 {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+}
+
+.admin-list-card .detail-card-head p,
+.admin-list-card .detail-note,
+.admin-list-card .detail-grid strong,
+.admin-list-card .detail-grid span {
+    font-size: 1.08rem;
+}
+
+.admin-actions-large {
+    margin-top: 18px;
+}
+
+.admin-actions-large .btn,
+.admin-actions-large .btn-dark-soft,
+.admin-actions-large .btn-outline-danger {
+    min-height: 56px;
+    padding: 0.95rem 1.3rem;
+    font-size: 1.02rem;
+}
+
+.admin-master-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 26px;
+    align-items: start;
+}
+
+.admin-master-media {
+    border-radius: 26px;
+    overflow: hidden;
+    min-height: 280px;
+    background: rgba(111, 44, 36, 0.08);
+}
+
+.admin-master-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-master-content {
+    display: grid;
+    gap: 14px;
+}
+
+.masters-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.admin-master-card {
+    padding: 24px;
+    height: 100%;
+}
+
+.admin-master-top {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-master-top h2 {
+    margin: 0;
+    line-height: 0.96;
+}
+
+.admin-master-top p {
+    margin: 0;
+}
+
+.admin-master-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 22px;
+}
+
+.admin-master-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: auto;
+}
+
+.admin-master-actions form {
+    margin: 0;
+}
+
+.admin-filter-form {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 18px;
+    align-items: end;
+}
+
+.filter-field {
+    display: grid;
+    gap: 10px;
+}
+
+.filter-field-wide {
+    grid-column: span 2;
+}
+
+.admin-filter-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-self: end;
+    grid-column: span 2;
+}
+
+.admin-appointment-layout {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 26px;
+    align-items: start;
+}
+
+.admin-appointment-media {
+    border-radius: 22px;
+    overflow: hidden;
+    min-height: 180px;
+    background: rgba(111, 44, 36, 0.08);
+}
+
+.admin-appointment-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-appointment-content {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-appointment-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px 22px;
+}
+
+.admin-filter-card {
+    overflow: visible;
+}
+
 @media (max-width: 1100px) {
     .editorial-hero,
     .story-grid,
@@ -897,7 +1405,10 @@ a {
     .auth-shell,
     .clean-grid,
     .funnel-layout,
-    .admin-grid {
+    .admin-grid,
+    .admin-master-layout,
+    .admin-filter-form,
+    .admin-appointment-layout {
         grid-template-columns: 1fr;
     }
 
@@ -905,8 +1416,23 @@ a {
     .compact-stats,
     .funnel-steps,
     .detail-grid,
-    .confirm-grid {
+    .confirm-grid,
+    .center-button-grid,
+    .loyalty-stat-grid,
+    .recommendation-grid,
+    .bonus-wide-grid,
+    .offer-showcase-grid,
+    .admin-appointment-grid,
+    .masters-admin-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-field-wide {
+        grid-column: auto;
+    }
+
+    .admin-master-info-grid {
+        grid-template-columns: 1fr;
     }
 
     .editorial-hero-cover {
@@ -992,11 +1518,23 @@ a {
     .funnel-steps,
     .detail-grid,
     .confirm-grid,
-    .offer-board {
+    .offer-board,
+    .center-button-grid,
+    .loyalty-stat-grid,
+    .recommendation-grid,
+    .bonus-wide-grid,
+    .offer-showcase-grid,
+    .admin-appointment-grid,
+    .masters-admin-grid {
         grid-template-columns: 1fr;
     }
 
     .choice-chips {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-master-actions {
         flex-direction: column;
         align-items: stretch;
     }
@@ -1009,5 +1547,26 @@ a {
     .service-side-meta {
         justify-items: start;
         min-width: 0;
+    }
+
+    .center-inline-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .simple-center-shell {
+        padding-top: 30px;
+    }
+
+    .admin-page-card {
+        padding: 24px;
+    }
+
+    .admin-filter-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-appointment-media {
+        min-height: 220px;
     }
 }

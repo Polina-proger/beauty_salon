@@ -63,6 +63,7 @@ class Appointment(db.Model):
     booked_by_name = db.Column(db.String(120))
     booked_by_phone = db.Column(db.String(30))
     notes = db.Column(db.Text)
+    bonus_spent = db.Column(db.Integer, default=0)
 
     service = db.relationship("Service")
 

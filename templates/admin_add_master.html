@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title or 'Добавить мастера' }} | {{ salon_name }}{% endblock %}
+{% block content %}
+<section class="simple-center-shell shell narrow-shell">
+    <span class="eyebrow">Masters</span>
+    <h1>{{ page_heading or 'Добавить мастера' }}</h1>
+    <p class="center-subtitle">{{ page_subtitle or 'Заполните большую понятную форму. После сохранения мастер появится в списке команды.' }}</p>
+    <div class="center-inline-actions">
+        <a class="btn btn-dark-soft" href="{{ url_for('admin_dashboard') }}">Назад в админку</a>
+        <a class="btn btn-dark-soft" href="{{ url_for('admin_masters_list') }}">Список мастеров</a>
+    </div>
+</section>
+
+<section class="shell narrow-shell">
+    <article class="admin-page-card">
+        <form method="POST" class="admin-large-form" action="{{ form_action or url_for('admin_add_master') }}">
+            {{ form.hidden_tag() }}
+            <div class="mb-4">{{ form.name.label(class="form-label") }}{{ form.name(class="form-control form-control-lg", placeholder="Имя мастера") }}</div>
+            <div class="mb-4">{{ form.specialty.label(class="form-label") }}{{ form.specialty(class="form-control form-control-lg", placeholder="Специализация") }}</div>
+            <div class="mb-4">{{ form.phone.label(class="form-label") }}{{ form.phone(class="form-control form-control-lg", placeholder="+7 999 000-00-00") }}</div>
+            <div class="mb-4">{{ form.address.label(class="form-label") }}{{ form.address(class="form-control form-control-lg", placeholder="Адрес салона") }}</div>
+            <div class="mb-4">{{ form.photo_filename.label(class="form-label") }}{{ form.photo_filename(class="form-control form-control-lg", placeholder="Ссылка или имя файла фото") }}</div>
+            <div class="mb-4">{{ form.bio.label(class="form-label") }}{{ form.bio(class="form-control form-control-lg", rows="5", placeholder="Краткое описание мастера") }}</div>
+            {{ form.submit(class="btn btn-primary w-100 admin-submit-btn", value=submit_label or 'Добавить мастера') }}
+        </form>
+    </article>
+</section>
+{% endblock %}

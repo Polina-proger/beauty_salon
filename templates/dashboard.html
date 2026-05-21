@@ -1,94 +1,46 @@
 {% extends "base.html" %}
 {% block title %}Кабинет клиента | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="simple-hero shell">
-    <div>
-        <span class="eyebrow">Client dashboard</span>
-        <h1>Личный кабинет клиента</h1>
-        <p>Мы убрали перегрузку: сначала ближайшая запись и кнопка действия, затем свободные окна и детали истории.</p>
+<section class="simple-center-shell shell">
+    <span class="eyebrow">Client dashboard</span>
+    <h1>Личный кабинет клиента</h1>
+    <p class="center-subtitle">Выберите нужный раздел. На главном экране теперь только самое важное и понятные переходы.</p>
+
+    {% if stats.next_visit %}
+        <div class="center-highlight-card">
+            <span>Ближайшая запись</span>
+            <strong>{{ stats.next_visit.service.name }}</strong>
+            <p>{{ stats.next_visit.start_time.strftime('%d.%m.%Y в %H:%M') }} · {{ stats.next_visit.master.name }}</p>
+        </div>
+    {% endif %}
+
+    <div class="center-highlight-card loyalty-preview-card">
+        <span>Бонусная система</span>
+        <strong>{{ loyalty.points }} бонусов · {{ loyalty.tier_name }}</strong>
+        <p>{{ loyalty.available_reward }}</p>
     </div>
-    <div class="hero-side-actions">
-        <a class="btn btn-primary" href="{{ url_for('free_slots') }}">Записаться</a>
-        <a class="btn btn-outline-light" href="{{ url_for('appointments') }}">Мои записи</a>
+
+    <div class="center-button-grid">
+        <a class="center-link-card primary-card" href="{{ url_for('free_slots') }}">
+            <span>1</span>
+            <strong>Записаться</strong>
+            <p>Выбрать услугу, время и мастера</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('appointments') }}">
+            <span>{{ stats.active_count }}</span>
+            <strong>Мои записи</strong>
+            <p>Открыть активные записи</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('history') }}">
+            <span>{{ stats.history_count }}</span>
+            <strong>История визитов</strong>
+            <p>Посмотреть прошлые посещения</p>
+        </a>
+        <a class="center-link-card" href="{{ url_for('offers') }}">
+            <span>{{ loyalty.points }}</span>
+            <strong>Бонусы и привилегии</strong>
+            <p>Открыть скидки и услуги за бонусы</p>
+        </a>
     </div>
-</section>
-
-<section class="shell compact-stats">
-    <article><span>Активные записи</span><strong>{{ stats.active_count }}</strong></article>
-    <article><span>История визитов</span><strong>{{ stats.history_count }}</strong></article>
-    <article><span>Предложения</span><strong>{{ stats.offers_count }}</strong></article>
-    <article><span>Любимая услуга</span><strong>{{ stats.favorite_service or 'Пока формируется' }}</strong></article>
-</section>
-
-<section class="shell clean-grid">
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Step 1</span>
-            <h2>Ближайшие записи</h2>
-        </div>
-        {% if active_appointments %}
-            {% for appt in active_appointments %}
-                <div class="booking-line">
-                    <div>
-                        <strong>{{ appt.service.name }}</strong>
-                        <p>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }} · {{ appt.master.name }}</p>
-                    </div>
-                    <a class="btn btn-sm btn-outline-light" href="{{ url_for('appointments') }}">Подробнее</a>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p class="muted-paragraph">У вас пока нет активных записей. Начните со свободных окон ниже.</p>
-        {% endif %}
-    </article>
-
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Step 2</span>
-            <h2>Свободные окна</h2>
-        </div>
-        {% for slot in slot_preview %}
-            <div class="booking-line">
-                <div>
-                    <strong>{{ slot.service.name }}</strong>
-                    <p>{{ slot.master.name }} · {{ slot.start_time.strftime('%d.%m %H:%M') }}</p>
-                </div>
-                <a class="btn btn-sm btn-primary" href="{{ url_for('free_slots', service_id=slot.service_id, date=slot.start_time.strftime('%Y-%m-%d'), time=slot.start_time.strftime('%H:%M'), master=slot.master_id) }}">Выбрать</a>
-            </div>
-        {% endfor %}
-    </article>
-
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Step 3</span>
-            <h2>Персональные предложения</h2>
-        </div>
-        {% if offers %}
-            {% for offer in offers %}
-                <div class="offer-line">
-                    <strong>{{ offer.service.name }}</strong>
-                    <p>{{ offer.description }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p class="muted-paragraph">Сейчас нет активных персональных предложений.</p>
-        {% endif %}
-    </article>
-
-    <article class="clean-card">
-        <div class="section-heading-block">
-            <span class="eyebrow">Recent activity</span>
-            <h2>История визитов</h2>
-        </div>
-        {% if history_preview %}
-            {% for appt in history_preview %}
-                <div class="history-line">
-                    <strong>{{ appt.service.name }}</strong>
-                    <span>{{ appt.start_time.strftime('%d.%m.%Y') }} · {{ 'Завершен' if appt.status == 'completed' else 'Отменен' }}</span>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p class="muted-paragraph">История появится после первых посещений.</p>
-        {% endif %}
-    </article>
 </section>
 {% endblock %}

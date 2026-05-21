@@ -96,7 +96,7 @@
         <div class="masters-grid editorial-masters-grid">
             {% for master in masters %}
                 <article class="master-card">
-                    <div class="master-photo" style="background-image: linear-gradient(rgba(94, 37, 30, 0.22), rgba(94, 37, 30, 0.22)), url('{% if master.photo_filename and '://' in master.photo_filename %}{{ master.photo_filename }}{% else %}{{ url_for('static', filename='images/landing/' ~ (master.photo_filename or 'placeholder-master.jpg')) }}{% endif %}');"></div>
+                    <div class="master-photo" style="background-image: linear-gradient(rgba(94, 37, 30, 0.22), rgba(94, 37, 30, 0.22)), url('{{ media_url(master.photo_filename) }}');"></div>
                     <div class="master-card-copy">
                         <h3>{{ master.name }}</h3>
                         <span>{{ master.specialty }}</span>

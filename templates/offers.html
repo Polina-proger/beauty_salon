@@ -1,22 +1,60 @@
 {% extends "base.html" %}
 {% block title %}Предложения | {{ salon_name }}{% endblock %}
 {% block content %}
-<section class="simple-hero shell">
-    <div>
-        <span class="eyebrow">Personal offers</span>
-        <h1>Персональные предложения</h1>
-        <p>Актуальные скидки и бонусы для следующего визита.</p>
+<section class="simple-center-shell shell narrow-shell">
+    <span class="eyebrow">Personal offers</span>
+    <h1>Бонусы и привилегии</h1>
+    <p class="center-subtitle">Здесь собраны активные скидки, текущий бонусный статус и процедуры, которые можно оплатить бонусами при записи.</p>
+    <div class="center-inline-actions">
+        <a class="btn btn-dark-soft" href="{{ url_for('dashboard') }}">Назад</a>
     </div>
 </section>
 
-<section class="shell offer-board">
+<section class="shell offer-wide-shell loyalty-board">
+    <article class="detail-card loyalty-hero-card">
+        <span class="offer-mark">Уровень {{ loyalty.tier_name }}</span>
+        <h2>{{ loyalty.points }} бонусов на счете</h2>
+        <p>{{ loyalty.available_reward }}</p>
+        <div class="loyalty-progress">
+            <div class="loyalty-progress-bar" style="width: {{ loyalty.progress_percent }}%;"></div>
+        </div>
+        {% if loyalty.next_threshold %}
+            <small>До следующего уровня осталось {{ loyalty.points_to_next }} бонусов.</small>
+        {% else %}
+            <small>У вас уже максимальный статус программы лояльности.</small>
+        {% endif %}
+    </article>
+
+    <div class="loyalty-stat-grid">
+        <article class="clean-card loyalty-mini-card">
+            <span>Завершенных визитов</span>
+            <strong>{{ loyalty.visits }}</strong>
+        </article>
+        <article class="clean-card loyalty-mini-card">
+            <span>Сумма визитов</span>
+            <strong>{{ loyalty.total_spent }} ₽</strong>
+        </article>
+        <article class="clean-card loyalty-mini-card">
+            <span>Активных скидок</span>
+            <strong>{{ offers|length }}</strong>
+        </article>
+    </div>
+</section>
+
+<section class="shell offer-wide-shell offer-board offer-showcase-grid">
     {% if offers %}
         {% for offer in offers %}
             <article class="offer-card">
-                <span class="offer-mark">-{{ offer.discount_percent }}%</span>
-                <h2>{{ offer.service.name }}</h2>
-                <p>{{ offer.description }}</p>
-                <small>Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</small>
+                <div class="offer-card-media" style="background-image: linear-gradient(rgba(73, 28, 22, 0.15), rgba(73, 28, 22, 0.38)), url('{{ service_image_url(offer.service.name) }}');"></div>
+                <div class="offer-card-copy">
+                    <span class="offer-mark">-{{ offer.discount_percent }}%</span>
+                    {% if offer.service.name in new_service_names %}
+                        <span class="new-badge">NEW</span>
+                    {% endif %}
+                    <h2>{{ offer.service.name }}</h2>
+                    <p>{{ offer.description }}</p>
+                    <small>Действует до {{ offer.valid_until.strftime('%d.%m.%Y') }}</small>
+                </div>
             </article>
         {% endfor %}
     {% else %}
@@ -24,5 +62,38 @@
             <p class="muted-paragraph">Пока нет активных предложений.</p>
         </article>
     {% endif %}
+</section>
+
+<section class="shell offer-wide-shell recommendation-stack">
+    <div class="section-heading-block">
+        <span class="eyebrow">Bonus booking</span>
+        <h2>Процедуры за бонусы</h2>
+    </div>
+    <div class="clean-grid recommendation-grid bonus-wide-grid">
+        {% if redeemable_services %}
+            {% for item in redeemable_services %}
+                <article class="clean-card recommendation-card">
+                    <div class="recommendation-media" style="background-image: linear-gradient(rgba(247, 240, 228, 0.08), rgba(247, 240, 228, 0.1)), url('{{ service_image_url(item.service.name) }}');"></div>
+                    <div class="recommendation-content">
+                        <span class="recommendation-mark">{{ item.service.duration }} мин</span>
+                        {% if item.service.name in new_service_names %}
+                            <span class="new-badge">Новинка</span>
+                        {% endif %}
+                        <h3>{{ item.service.name }}</h3>
+                        <p>Эту услугу можно полностью оплатить бонусами прямо на этапе записи. Списание произойдет после подтверждения окна.</p>
+                        <div class="recommendation-footer">
+                            <strong>{{ item.bonus_cost }} бонусов</strong>
+                            <span>{{ item.service.price }} ₽</span>
+                        </div>
+                        <a class="btn btn-primary" href="{{ url_for('free_slots', service_id=item.service.id, redeem_bonus=1) }}">Записаться за бонусы</a>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <article class="clean-card">
+                <p class="muted-paragraph">Сейчас нет услуг, которые можно полностью оплатить бонусами. После новых завершенных визитов список расширится.</p>
+            </article>
+        {% endif %}
+    </div>
 </section>
 {% endblock %}

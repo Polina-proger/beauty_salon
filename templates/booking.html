@@ -19,10 +19,19 @@
             <div><span>Специализация</span><strong>{{ slot.master.specialty }}</strong></div>
             <div><span>Телефон</span><strong>{{ slot.master.phone }}</strong></div>
             <div><span>Адрес</span><strong>{{ slot.master.address }}</strong></div>
-            <div><span>Стоимость</span><strong>{{ slot.service.price }} ₽</strong></div>
+            <div><span>Стоимость</span><strong>{% if redeem_bonus and can_redeem %}0 ₽{% else %}{{ slot.service.price }} ₽{% endif %}</strong></div>
             <div><span>Клиент</span><strong>{{ current_user.name }}</strong></div>
+            {% if redeem_bonus and can_redeem %}
+                <div><span>Оплата</span><strong>{{ slot.service.price }} бонусов</strong></div>
+            {% endif %}
         </div>
         <form method="POST">
+            {% if redeem_bonus and can_redeem %}
+                <input type="hidden" name="redeem_bonus" value="1">
+            {% endif %}
+            {% if redeem_bonus and not can_redeem %}
+                <p class="detail-note">Для этой услуги сейчас не хватает бонусов. Можно оформить обычную запись.</p>
+            {% endif %}
             <button class="btn btn-primary w-100" type="submit">Подтвердить запись</button>
         </form>
     </article>

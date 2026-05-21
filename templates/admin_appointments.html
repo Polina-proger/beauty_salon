@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Управление записями | {{ salon_name }}{% endblock %}
+{% block content %}
+<section class="simple-center-shell shell admin-appointments-shell">
+    <span class="eyebrow">Appointments</span>
+    <h1>Управление записями</h1>
+    <p class="center-subtitle">На отдельной странице проще менять статусы и просматривать детали записей клиентов.</p>
+    <div class="center-inline-actions">
+        <a class="btn btn-dark-soft" href="{{ url_for('admin_dashboard') }}">Назад в админку</a>
+        <a class="btn btn-dark-soft" href="{{ url_for('admin_add_slot') }}">Создать окно</a>
+    </div>
+</section>
+
+<section class="shell admin-appointments-shell">
+    <article class="admin-page-card admin-filter-card">
+        <form method="GET" class="admin-large-form admin-filter-form">
+            <div class="filter-field filter-field-wide">
+                <label class="form-label" for="q">Поиск</label>
+                <input class="form-control form-control-lg" id="q" type="text" name="q" value="{{ selected_query }}" placeholder="Клиент, мастер, услуга, телефон или адрес">
+            </div>
+            <div class="filter-field">
+                <label class="form-label" for="date">Дата</label>
+                <input class="form-control form-control-lg" id="date" type="date" name="date" value="{{ selected_date }}">
+            </div>
+            <div class="filter-field">
+                <label class="form-label" for="master_id">Мастер</label>
+                <select class="form-select form-select-lg" id="master_id" name="master_id">
+                    <option value="">Все мастера</option>
+                    {% for master in masters %}
+                        <option value="{{ master.id }}" {% if selected_master_id == master.id %}selected{% endif %}>{{ master.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-field">
+                <label class="form-label" for="service_id">Услуга</label>
+                <select class="form-select form-select-lg" id="service_id" name="service_id">
+                    <option value="">Все услуги</option>
+                    {% for service in services %}
+                        <option value="{{ service.id }}" {% if selected_service_id == service.id %}selected{% endif %}>{{ service.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-field">
+                <label class="form-label" for="status">Статус</label>
+                <select class="form-select form-select-lg" id="status" name="status">
+                    <option value="">Все статусы</option>
+                    <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Активна</option>
+                    <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>Завершена</option>
+                    <option value="cancelled" {% if selected_status == 'cancelled' %}selected{% endif %}>Отменена</option>
+                    <option value="free" {% if selected_status == 'free' %}selected{% endif %}>Свободно</option>
+                </select>
+            </div>
+            <div class="admin-filter-actions">
+                <button class="btn btn-primary admin-submit-btn" type="submit">Применить фильтры</button>
+                <a class="btn btn-dark-soft admin-submit-btn" href="{{ url_for('admin_appointments') }}">Сбросить</a>
+            </div>
+        </form>
+    </article>
+</section>
+
+<section class="shell admin-appointments-shell detail-stack">
+    {% if appointments %}
+        {% for appt in appointments %}
+            <article class="detail-card admin-list-card">
+                <div class="admin-appointment-layout">
+                    <div class="admin-appointment-media">
+                        <img src="{{ media_url(appt.master.photo_filename) }}" alt="{{ appt.master.name }}">
+                    </div>
+                    <div class="admin-appointment-content">
+                        <div class="detail-card-head">
+                            <div>
+                                <h2>{{ appt.service.name }}</h2>
+                                <p>{{ appt.start_time.strftime('%d.%m.%Y %H:%M') }} · {{ appt.master.name }}</p>
+                            </div>
+                            <span class="status-pill {% if appt.status == 'completed' %}done{% elif appt.status == 'cancelled' %}cancel{% else %}active{% endif %}">
+                                {{ appt.status }}
+                            </span>
+                        </div>
+                        <div class="detail-grid admin-appointment-grid">
+                            <div><span>Клиент</span><strong>{{ appt.booked_by_name }}</strong></div>
+                            <div><span>Телефон клиента</span><strong>{{ appt.booked_by_phone }}</strong></div>
+                            <div><span>Мастер</span><strong>{{ appt.master.name }}</strong></div>
+                            <div><span>Телефон мастера</span><strong>{{ appt.master.phone }}</strong></div>
+                            <div><span>Услуга</span><strong>{{ appt.service.name }}</strong></div>
+                            <div><span>Адрес</span><strong>{{ appt.master.address }}</strong></div>
+                        </div>
+                        <div class="admin-actions admin-actions-large">
+                            <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
+                                <input type="hidden" name="status" value="active">
+                                <button class="btn btn-dark-soft" type="submit">Активна</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
+                                <input type="hidden" name="status" value="completed">
+                                <button class="btn btn-dark-soft" type="submit">Завершить</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_update_appointment', appointment_id=appt.id) }}">
+                                <input type="hidden" name="status" value="cancelled">
+                                <button class="btn btn-outline-danger" type="submit">Отменить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        {% if selected_status != 'free' %}
+            <article class="clean-card">
+                <p class="muted-paragraph">По выбранным фильтрам записей не найдено.</p>
+            </article>
+        {% endif %}
+    {% endif %}
+</section>
+
+<section class="shell admin-appointments-shell detail-stack">
+    <div class="section-heading-block">
+        <span class="eyebrow">Open slots</span>
+        <h2>Свободные окна</h2>
+    </div>
+    {% if free_slots %}
+        {% for slot in free_slots %}
+            <article class="detail-card admin-list-card admin-slot-card">
+                <div class="admin-appointment-layout">
+                    <div class="admin-appointment-media">
+                        <img src="{{ media_url(slot.master.photo_filename) }}" alt="{{ slot.master.name }}">
+                    </div>
+                    <div class="admin-appointment-content">
+                        <div class="detail-card-head">
+                            <div>
+                                <h2>{{ slot.service.name }}</h2>
+                                <p>{{ slot.start_time.strftime('%d.%m.%Y %H:%M') }} · {{ slot.master.name }}</p>
+                            </div>
+                            <span class="status-pill active">свободно</span>
+                        </div>
+                        <div class="detail-grid admin-appointment-grid">
+                            <div><span>Мастер</span><strong>{{ slot.master.name }}</strong></div>
+                            <div><span>Телефон мастера</span><strong>{{ slot.master.phone }}</strong></div>
+                            <div><span>Услуга</span><strong>{{ slot.service.name }}</strong></div>
+                            <div><span>Длительность</span><strong>{{ slot.service.duration }} мин</strong></div>
+                            <div><span>Стоимость</span><strong>{{ slot.service.price }} ₽</strong></div>
+                            <div><span>Адрес</span><strong>{{ slot.master.address }}</strong></div>
+                        </div>
+                        <div class="admin-actions admin-actions-large">
+                            <a class="btn btn-dark-soft" href="{{ url_for('admin_edit_slot', slot_id=slot.id) }}">Изменить</a>
+                            <form method="POST" action="{{ url_for('admin_delete_slot', slot_id=slot.id) }}">
+                                <button class="btn btn-outline-danger" type="submit">Удалить окно</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        {% if not selected_status or selected_status == 'free' %}
+            <article class="clean-card">
+                <p class="muted-paragraph">По выбранным фильтрам свободных окон не найдено.</p>
+            </article>
+        {% endif %}
+    {% endif %}
+</section>
+{% endblock %}

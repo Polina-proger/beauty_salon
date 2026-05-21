@@ -30,11 +30,17 @@
                         <option value="{{ service.id }}" {% if selected_service_id == service.id %}selected{% endif %}>{{ service.name }} · {{ service.price }} ₽</option>
                     {% endfor %}
                 </select>
+                {% if redeem_bonus %}
+                    <input type="hidden" name="redeem_bonus" value="1">
+                {% endif %}
                 <button class="btn btn-primary" type="submit">Продолжить</button>
             </form>
 
             {% if selected_service %}
                 <div class="selected-chip">Выбрано: {{ selected_service.name }}</div>
+            {% endif %}
+            {% if redeem_bonus %}
+                <div class="selected-chip">Оплата бонусами активна</div>
             {% endif %}
         </article>
 
@@ -48,7 +54,7 @@
                     <h3>Дата</h3>
                     <div class="choice-chips">
                         {% for item in available_dates %}
-                            <a class="choice-chip {% if selected_date == item.strftime('%Y-%m-%d') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=item.strftime('%Y-%m-%d')) }}">{{ item.strftime('%d.%m') }}</a>
+                            <a class="choice-chip {% if selected_date == item.strftime('%Y-%m-%d') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=item.strftime('%Y-%m-%d'), redeem_bonus=1 if redeem_bonus else None) }}">{{ item.strftime('%d.%m') }}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -58,7 +64,7 @@
                         <h3>Время</h3>
                         <div class="choice-chips">
                             {% for item in available_times %}
-                                <a class="choice-chip {% if selected_time == item %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=item) }}">{{ item }}</a>
+                                <a class="choice-chip {% if selected_time == item %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=item, redeem_bonus=1 if redeem_bonus else None) }}">{{ item }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -75,11 +81,11 @@
             </div>
             {% if master_slots %}
                 <div class="choice-chips vertical">
-                    <a class="choice-chip {% if selected_master == 'any' %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master='any') }}">
+                    <a class="choice-chip {% if selected_master == 'any' %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master='any', redeem_bonus=1 if redeem_bonus else None) }}">
                         Неважно, любой мастер
                     </a>
                     {% for slot in master_slots %}
-                        <a class="choice-chip {% if selected_master == (slot.master_id ~ '') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master=slot.master_id) }}">
+                        <a class="choice-chip {% if selected_master == (slot.master_id ~ '') %}active{% endif %}" href="{{ url_for('free_slots', service_id=selected_service_id, date=selected_date, time=selected_time, master=slot.master_id, redeem_bonus=1 if redeem_bonus else None) }}">
                             {{ slot.master.name }} · {{ slot.master.specialty }}
                         </a>
                     {% endfor %}
@@ -107,8 +113,11 @@
                 <div><span>Мастер</span><strong>{{ selected_slot.master.name }}</strong></div>
                 <div><span>Телефон</span><strong>{{ selected_slot.master.phone }}</strong></div>
                 <div><span>Адрес</span><strong>{{ selected_slot.master.address }}</strong></div>
+                {% if redeem_bonus %}
+                    <div><span>Списание</span><strong>{{ selected_slot.service.price }} бонусов</strong></div>
+                {% endif %}
             </div>
-            <a class="btn btn-primary" href="{{ url_for('book_slot', slot_id=selected_slot.id) }}">Перейти к подтверждению</a>
+            <a class="btn btn-primary" href="{{ url_for('book_slot', slot_id=selected_slot.id, redeem_bonus=1 if redeem_bonus else None) }}">Перейти к подтверждению</a>
         </article>
     </section>
 {% endif %}
